@@ -1,0 +1,42 @@
+{
+    "dev": {
+        "app_function": "apps.f",
+        "keep_warm": false,
+        "role_name": "LabRole",
+        "aws_region": "us-east-1",
+        "profile_name": "default",
+        "manage_roles": false,
+        "apigateway_enabled": false,
+        "project_name": "parcial_big",
+        "runtime": "python3.8",
+        "s3_bucket": "landing-casas-pineda-poveda",
+        
+        "events": [{
+           "function": "apps.f",
+           "expressions": ["cron(0 14 ? * MON *)"]
+        }]
+    },
+    
+    "dev2": {
+        "app_function": "apps.g",
+        "keep_warm": false,
+        "role_name": "LabRole",
+        "aws_region": "us-east-1",
+        "profile_name": "default",
+        "manage_roles": false,
+        "apigateway_enabled": false,
+        "project_name": "parcial_big",
+        "runtime": "python3.8",
+        "s3_bucket": "casas-final-pineda-poveda",
+        
+         "events": [{
+            "function": "apps.g",
+            "event_source": {
+                "arn": "arn:aws:s3:::casas-final-pineda-poveda",
+                "events": [
+                    "s3:ObjectCreated:*"
+                ]
+            }
+        }]
+    }
+}    
