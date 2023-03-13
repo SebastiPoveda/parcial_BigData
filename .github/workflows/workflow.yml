@@ -20,17 +20,52 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.8"
+        
+    - name: Install dependencies
+      env:
+        VIRTUALENV: env
+      run: |
+        pip install virtualenv
+        virtualenv -p python $VIRTUALENV
+        source $VIRTUALENV/bin/activate
+        pip install flake8
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install awscli
+        
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token:  ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: "us-east-1"
+        
+    - name: Lint with flake8
+      env:
+       VIRTUALENV: env
+      run: |
+        source $VIRTUALENV/bin/activate
+        flake8 . --count --select=E9 --show-source --statistics
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
+    - name: Actualiza etapas
+      env:
+        VIRTUALENV: env
+      run: |
+        source $VIRTUALENV/bin/activate
+        zappa update dev
+        zappa update dev2
+        
+    - name: Hazlo
+      env:
+        VIRTUALENV: env
+      run: |
+        source $VIRTUALENV/bin/activate
+        zappa invoke dev traer.lambda1
+        pytest test_traer.py
