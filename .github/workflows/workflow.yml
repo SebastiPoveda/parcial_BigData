@@ -49,5 +49,4 @@ jobs:
         
     - name: Despliegue automatico
       run: |
-        source env/bin/activate
-        zappa deploy --all
+        zappa init
