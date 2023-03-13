@@ -49,4 +49,5 @@ jobs:
         
     - name: Despliegue automatico
       run: |
-        zappa invoke --all apps.f
+        source env/bin/activate
+        zappa deploy --all
