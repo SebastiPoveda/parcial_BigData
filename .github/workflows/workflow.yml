@@ -43,17 +43,11 @@ jobs:
       run: | 
         flake8 apps.py
     
-    - name: Actualiza etapas
-      env:
-        VIRTUALENV: env
+    - name: pruebas unitarias
       run: |
-        source $VIRTUALENV/bin/activate
-        zappa update dev
-        zappa update dev2
+        pytest
         
     - name: Hazlo
-      env:
-        VIRTUALENV: env
       run: |
         source $VIRTUALENV/bin/activate
         zappa invoke dev traer.lambda1
