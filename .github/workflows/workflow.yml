@@ -47,8 +47,7 @@ jobs:
       run: |
         pytest
         
-    - name: Hazlo
+    - name: Despliegue automatico
       run: |
-        source $VIRTUALENV/bin/activate
-        zappa invoke dev traer.lambda1
-        pytest test_traer.py
+        zappa update --all
+        zappa invoke --all apps.f
