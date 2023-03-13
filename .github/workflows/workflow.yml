@@ -39,9 +39,7 @@ jobs:
         aws-session-token:  ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region: "us-east-1"
         
-    - name: Lint with flake8
-      env:
-       VIRTUALENV: env
+    - name: prueba flake8
       run: | 
         flake8 apps.py
     
