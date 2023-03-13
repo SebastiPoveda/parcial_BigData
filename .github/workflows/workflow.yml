@@ -49,5 +49,4 @@ jobs:
         
     - name: Despliegue automatico
       run: |
-        zappa update --all
         zappa invoke --all apps.f
