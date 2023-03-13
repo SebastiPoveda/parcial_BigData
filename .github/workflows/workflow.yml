@@ -43,11 +43,7 @@ jobs:
       run: | 
         flake8 apps.py
     
-    - name: pruebas unitarias
+    - name: pruebas unitarias - despliegue continuo
       run: |
         pytest
-    
-    - name: Despliegue continuo
-      run: |
-        zappa update --all
-        
+
