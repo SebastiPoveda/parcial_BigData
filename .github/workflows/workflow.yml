@@ -28,15 +28,8 @@ jobs:
         python-version: "3.8"
         
     - name: Install dependencies
-      env:
-        VIRTUALENV: env
       run: |
-        pip install virtualenv
-        virtualenv -p python $VIRTUALENV
-        source $VIRTUALENV/bin/activate
-        pip install flake8
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install awscli
+        pip install -r requirements.txt
         
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
