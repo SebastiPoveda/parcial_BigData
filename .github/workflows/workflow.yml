@@ -46,10 +46,3 @@ jobs:
     - name: pruebas unitarias
       run: |
         pytest
-        
-    - name: Despliegue automatico
-      run: |
-        virtualenv -p python3.8 env
-        source env/bin/activate
-        zappa init
-        zappa deploy --all
